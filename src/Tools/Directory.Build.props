@@ -2,8 +2,10 @@
   <PropertyGroup>
     <ToolSharedSourceRoot>$(MSBuildThisFileDirectory)Shared\</ToolSharedSourceRoot>
     <DisablePubternalApiCheck>true</DisablePubternalApiCheck>
+
+    <!-- !!! Temporary workaround while we switch TFMs. -->
+    <NoWarn>$(NoWarn);NU5118</NoWarn>
   </PropertyGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)..\, Directory.Build.props))\Directory.Build.props" />
-
 </Project>
