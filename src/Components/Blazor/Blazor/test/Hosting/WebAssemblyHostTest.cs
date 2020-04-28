@@ -43,10 +43,11 @@ namespace Microsoft.AspNetCore.Blazor.Hosting.Test
             var host = builder.Build();
 
             // Act
-            await host.StartAsync();
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () => await host.StartAsync());
 
             // Assert
             Assert.True(startup.ConfigureCalled);
+            Assert.Equal("Renderer registry can only be modified from WebAssembly runtime.", ex.Message);
         }
 
         private class MockStartup : IBlazorStartup
