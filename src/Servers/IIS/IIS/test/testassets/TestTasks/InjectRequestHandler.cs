@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -16,11 +15,25 @@ namespace TestTasks
 
         private static void Main(string[] args)
         {
-            string depsFile = args[0];
-            string rid = "";
-            if (args.Length > 1)
+            string depsFile;
+            string rid = null;
+            string publishDir = null;
+            switch (args.Length)
             {
-                rid = args[1];
+                case 1:
+                    depsFile = args[0];
+                    break;
+                case 2:
+                    depsFile = args[0];
+                    rid = args[1];
+                    break;
+                case 3:
+                    depsFile = args[0];
+                    rid = args[1];
+                    publishDir = args[2];
+                    break;
+                default:
+                    throw new ApplicationException($"Unexpected argument count {args.Length}");
             }
 
             JToken deps;
@@ -56,7 +69,8 @@ namespace TestTasks
                     new JProperty("rid", rid),
                     new JProperty("assetType", "native")
                 )));
-                var outputFolder = Path.GetDirectoryName(depsFile);
+
+                var outputFolder = string.IsNullOrEmpty(publishDir) ? Path.GetDirectoryName(depsFile) : publishDir;
                 var bitnessString = rid.Substring(rid.Length - 3, 3);
                 File.Copy(Path.Combine(outputFolder, bitnessString, aspnetcoreV2Name), Path.Combine(outputFolder, aspnetcoreV2Name), overwrite: true);
             }

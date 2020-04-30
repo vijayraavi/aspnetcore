@@ -70,7 +70,7 @@
           Condition=" '$(InProcessTestSite)' == 'true' AND '$(BuildIisNativeProjects)' == 'true' AND '$(TargetFrameworkIdentifier)' != '.NETFramework'"
           AfterTargets="GeneratePublishDependencyFile"
           DependsOnTargets="PrepareInjectionApp">
-    <Exec Command="$(InjectDepsApp) &quot;$(PublishDepsFilePath)&quot; $(RuntimeIdentifier) " />
+    <Exec Command="$(InjectDepsApp) &quot;$(PublishDepsFilePath)&quot; $(RuntimeIdentifier) &quot;$(PublishDir)&quot;" />
   </Target>
 
   <Target Name="PreventProjectReferencesFromBuilding" BeforeTargets="BeforeResolveReferences" Condition="'@(TestAssetPublishProfile->Count())' != '0'">
